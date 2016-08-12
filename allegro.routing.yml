@@ -1,0 +1,8 @@
+allegro.config:
+  path: '/allegro/settings'
+  defaults:
+    _form: '\Drupal\allegro\Form\AllegroConfigForm'
+    _title: 'Allegro'
+  requirements:
+    _permission: 'administer site configuration'
+

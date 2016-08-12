@@ -3,3 +3,30 @@
 * @file
 * A description of what your module does.
 */
+
+function allegro_establish_connection() {
+    $config = \Drupal::config('allegro.config');
+    $username = $config->get('username');
+    $pass = $config->get('password');
+    $key = $config->get('webapi_key');
+    $test_mode = $config->get('test_mode');
+    $country_code = $config->get('country_code');
+
+    if (! ($username && $pass && $key && $country_code)) {
+        return false;
+    }
+
+    try {
+        \Drupal\allegro\Util\AllegroAPI::testConnection($username, $pass, $key, $country_code, $test_mode);
+        return true;
+    } catch(SoapFault $e) {
+        if ($test_mode) {
+            drupal_set_message($e->getMessage(), 'warning');
+        } else {
+            \Drupal::logger('allegro')->warning('Allegro connection error: @message', ['@message' => $e->getMessage()]);
+        }
+    }
+    return false;
+
+
+}

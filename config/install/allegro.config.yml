@@ -1,0 +1,19 @@
+allegro.config:
+  type: config_object
+  label: 'Allegro Settings'
+  mapping:
+    username:
+      type: text
+      label: Login
+    password:
+      type: password
+      label: Password
+    webapi_key:
+      type: text
+      label: 'WebAPI Key'
+    test_mode:
+      type: checkbox
+      label: 'Turn on test mode'
+    country_code:
+      type: text
+      label: 'Action site'
