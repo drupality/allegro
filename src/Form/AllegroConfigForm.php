@@ -27,29 +27,39 @@ class AllegroConfigForm extends ConfigFormBase
     {
         $config = self::getConfig();
 
-        $form['username'] = [
+        $form['tabs'] = [
+            '#type' => 'vertical_tabs',
+            '#default_tab' => 'settings'
+        ];
+
+        $form['settings'] = [
+            '#type' => 'details',
+            '#title' => $this->t('Settings'),
+        ];
+
+        $form['settings']['username'] = [
             '#type' => 'textfield',
             '#title' => $this->t('Username'),
             '#default_value' => $config->get('username'),
             '#required' => TRUE,
         ];
-        $form['password'] = [
+        $form['settings']['password'] = [
             '#type' => 'password',
             '#title' => $this->t('Password'),
             '#default_value' => '',
         ];
-        $form['webapi_key'] = [
+        $form['settings']['webapi_key'] = [
             '#type' => 'textfield',
             '#title' => $this->t('WebAPI Key'),
             '#default_value' => $config->get('webapi_key'),
             '#required' => TRUE,
         ];
-        $form['test_mode'] = [
+        $form['settings']['test_mode'] = [
             '#type' => 'checkbox',
             '#title' => $this->t('Turn on test mode'),
             '#default_value' => $config->get('test_mode'),
         ];
-        $form['country_code'] = [
+        $form['settings']['country_code'] = [
           '#type' => 'select',
           '#options' => AllegroAPI::getSupportedWebsites(),
           '#title' => $this->t('Auction site'),
