@@ -1,0 +1,1 @@
+Port of Allegro module (https://www.drupal.org/project/allegro) for Drupal 8
