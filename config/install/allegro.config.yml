@@ -1,19 +1,19 @@
-allegro.config:
-  type: config_object
+allegro.settings:
+  type: config_entity
   label: 'Allegro Settings'
   mapping:
     username:
       type: text
       label: Login
     password:
-      type: password
+      type: string
       label: Password
     webapi_key:
-      type: text
+      type: string
       label: 'WebAPI Key'
     test_mode:
-      type: checkbox
+      type: boolean
       label: 'Turn on test mode'
     country_code:
-      type: text
+      type: integer
       label: 'Action site'

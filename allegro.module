@@ -5,7 +5,7 @@
 */
 
 function allegro_establish_connection() {
-    $config = \Drupal::config('allegro.config');
+    $config = \Drupal\allegro\Form\AllegroConfigForm::getConfig();
     $username = $config->get('username');
     $pass = $config->get('password');
     $key = $config->get('webapi_key');
@@ -21,7 +21,8 @@ function allegro_establish_connection() {
         return true;
     } catch(SoapFault $e) {
         if ($test_mode) {
-            drupal_set_message($e->getMessage(), 'warning');
+
+            drupal_set_message($e->getMessage(), 'error');
         } else {
             \Drupal::logger('allegro')->warning('Allegro connection error: @message', ['@message' => $e->getMessage()]);
         }

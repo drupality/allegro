@@ -16,9 +16,16 @@ use Drupal\allegro\Util\AllegroAPI;
 class AllegroConfigForm extends ConfigFormBase
 {
 
+    public static function getConfig($isEditable = false) {
+        if (! $isEditable) {
+            return \Drupal::config('allegro.settings');
+        }
+        return \Drupal::configFactory()->getEditable('allegro.settings');
+    }
+
     public function buildForm(array $form, FormStateInterface $form_state)
     {
-        $config = $this->config('allegro.config');
+        $config = self::getConfig();
 
         $form['username'] = [
             '#type' => 'textfield',
@@ -54,7 +61,7 @@ class AllegroConfigForm extends ConfigFormBase
 
     public function submitForm(array &$form, FormStateInterface $form_state)
     {
-        $config = $this->config('allegro.config');
+        $config = self::getConfig(true);
 
         foreach(['username', 'webapi_key','test_mode', 'country_code'] as $key) {
             $value = $form_state->getValue($key);
@@ -88,7 +95,7 @@ class AllegroConfigForm extends ConfigFormBase
     protected function getEditableConfigNames()
     {
         return [
-          'allegro.config'
+          'allegro.settings'
         ];
     }
 
