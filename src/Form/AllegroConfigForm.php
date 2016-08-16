@@ -50,8 +50,8 @@ class AllegroConfigForm extends ConfigFormBase
             '#default_value' => $config->get('test_mode'),
         ];
         $form['country_code'] = [
-            '#type' => 'textfield',
-//          '#type' => 'select',
+          '#type' => 'select',
+          '#options' => AllegroAPI::getSupportedWebsites(),
           '#title' => $this->t('Auction site'),
           '#default_value' => $config->get('country_code'),
           '#required' => TRUE,
