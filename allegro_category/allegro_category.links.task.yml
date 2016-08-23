@@ -1,0 +1,5 @@
+allegro_category.page:
+  route_name: allegro_category.page
+  title: 'Categories'
+  base_route: allegro.config
+  weight: 1

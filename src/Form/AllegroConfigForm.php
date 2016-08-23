@@ -18,48 +18,38 @@ class AllegroConfigForm extends ConfigFormBase
 
     public static function getConfig($isEditable = false) {
         if (! $isEditable) {
-            return \Drupal::config('allegro.settings');
+            return \Drupal::config('allegro.config');
         }
-        return \Drupal::configFactory()->getEditable('allegro.settings');
+        return \Drupal::configFactory()->getEditable('allegro.config');
     }
 
     public function buildForm(array $form, FormStateInterface $form_state)
     {
         $config = self::getConfig();
 
-        $form['tabs'] = [
-            '#type' => 'vertical_tabs',
-            '#default_tab' => 'settings'
-        ];
-
-        $form['settings'] = [
-            '#type' => 'details',
-            '#title' => $this->t('Settings'),
-        ];
-
-        $form['settings']['username'] = [
+        $form['username'] = [
             '#type' => 'textfield',
             '#title' => $this->t('Username'),
             '#default_value' => $config->get('username'),
             '#required' => TRUE,
         ];
-        $form['settings']['password'] = [
+        $form['password'] = [
             '#type' => 'password',
             '#title' => $this->t('Password'),
             '#default_value' => '',
         ];
-        $form['settings']['webapi_key'] = [
+        $form['webapi_key'] = [
             '#type' => 'textfield',
             '#title' => $this->t('WebAPI Key'),
             '#default_value' => $config->get('webapi_key'),
             '#required' => TRUE,
         ];
-        $form['settings']['test_mode'] = [
+        $form['test_mode'] = [
             '#type' => 'checkbox',
             '#title' => $this->t('Turn on test mode'),
             '#default_value' => $config->get('test_mode'),
         ];
-        $form['settings']['country_code'] = [
+        $form['country_code'] = [
           '#type' => 'select',
           '#options' => AllegroAPI::getSupportedWebsites(),
           '#title' => $this->t('Auction site'),

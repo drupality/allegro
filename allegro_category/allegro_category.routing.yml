@@ -1,0 +1,7 @@
+allegro_category.page:
+  path: 'allegro/settings/categories'
+  defaults:
+    _controller: '\Drupal\allegro_category\Controller\CategoryController::page'
+    _title: 'Allegro Categories'
+  requirements:
+    _permission: 'administer site configuration'

@@ -1,0 +1,7 @@
+name: Allegro Category
+type: module
+description: Support for Allegro categorization.
+core: 8.x
+package: Allegro
+dependencies:
+  - allegro

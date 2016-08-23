@@ -1,0 +1,4 @@
+allegro.config:
+  route_name: allegro.config
+  title: General
+  base_route: allegro.config

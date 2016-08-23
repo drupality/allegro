@@ -1,4 +1,4 @@
-allegro.settings:
+allegro.config:
   type: config_entity
   label: 'Allegro Settings'
   mapping:

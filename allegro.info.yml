@@ -3,3 +3,4 @@ type: module
 description: 'Allegro integration'
 core: 8.x
 configure: 'allegro.config'
+package: Allegro
