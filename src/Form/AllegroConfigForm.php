@@ -77,7 +77,7 @@ class AllegroConfigForm extends ConfigFormBase
         $config->save();
         parent::submitForm($form, $form_state);
 
-        if (allegro_establish_connection()) {
+        if (allegro_test_connection()) {
             drupal_set_message('Connected successfully to WebAPI service.');
         } else {
             drupal_set_message('Could not connect to WebAPI service.', 'error');

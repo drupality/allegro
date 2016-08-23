@@ -4,13 +4,17 @@
 * A description of what your module does.
 */
 
-function allegro_establish_connection() {
-    $config = \Drupal\allegro\Form\AllegroConfigForm::getConfig();
-    $username = $config->get('username');
-    $pass = $config->get('password');
-    $key = $config->get('webapi_key');
-    $test_mode = $config->get('test_mode');
-    $country_code = $config->get('country_code');
+function allegro_client() {
+
+}
+
+function allegro_test_connection() {
+    $credentials = allegro_credentials_object();
+    $username = $credentials->getUsername();
+    $pass = $credentials->getPassword();
+    $key = $credentials->getWebAPIkey();
+    $test_mode = $credentials->isTestMode();
+    $country_code = $credentials->getCountryCode();
 
     if (! ($username && $pass && $key && $country_code)) {
         return false;
@@ -21,7 +25,6 @@ function allegro_establish_connection() {
         return true;
     } catch(SoapFault $e) {
         if ($test_mode) {
-
             drupal_set_message($e->getMessage(), 'error');
         } else {
             \Drupal::logger('allegro')->warning('Allegro connection error: @message', ['@message' => $e->getMessage()]);
@@ -30,4 +33,8 @@ function allegro_establish_connection() {
     return false;
 
 
+}
+
+function allegro_credentials_object() {
+  return \Drupal\allegro\Util\AllegroCredentials::get();
 }

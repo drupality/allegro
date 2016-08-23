@@ -22,3 +22,10 @@ function allegro_category_help($route_name, RouteMatchInterface $route_match) {
     default:
   }
 }
+
+function allegro_category_download($offset  = 0, $package = 5000) {
+    $db = \Drupal::database();
+    $db->startTransaction();
+
+
+}
