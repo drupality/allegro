@@ -4,7 +4,37 @@
 * A description of what your module does.
 */
 
-function allegro_client() {
+function allegro_client($login = TRUE, $reset = FALSE) {
+  if (!$reset) {
+    $allegro = &drupal_static(__FUNCTION__);
+  }
+
+  if (empty($allegro) || $allegro->logged != $login) {
+    try {
+      $allegro = new AllegroAPI();
+      $credentials = allegro_credentials_object();
+
+      $allegro->userLogin = $credentials->getUsername();
+      $allegro->userPassword = $credentials->getPassword();
+      $allegro->webapiKey = $credentials->getWebAPIkey();
+      $allegro->countryCode = $credentials->getCountryCode();
+      $allegro->testMode = $credentials->isTestMode();
+
+      if ($login) {
+        $allegro->login();
+      }
+      else {
+        $allegro->init();
+      }
+    }
+    catch (SoapFault $e) {
+      allegro_print_soap_error_if_allowed($e);
+      drupal_set_message(t('An error occurred while connecting to WebAPI service. Check logs for more information.'), 'error');
+      throw $e;
+    }
+  }
+
+  return !empty($allegro) ? $allegro : FALSE;
 
 }
 
@@ -24,11 +54,8 @@ function allegro_test_connection() {
         \Drupal\allegro\Util\AllegroAPI::testConnection($username, $pass, $key, $country_code, $test_mode);
         return true;
     } catch(SoapFault $e) {
-        if ($test_mode) {
-            drupal_set_message($e->getMessage(), 'error');
-        } else {
-            \Drupal::logger('allegro')->warning('Allegro connection error: @message', ['@message' => $e->getMessage()]);
-        }
+        allegro_print_soap_error_if_allowed($e);
+        \Drupal::logger('allegro')->warning('Allegro connection error: @message', ['@message' => $e->getMessage()]);
     }
     return false;
 
@@ -37,4 +64,10 @@ function allegro_test_connection() {
 
 function allegro_credentials_object() {
   return \Drupal\allegro\Util\AllegroCredentials::get();
+}
+
+function allegro_print_soap_error_if_allowed(SoapFault $ex) {
+  if (user_access('access site reports')) {
+    drupal_set_message($ex->getMessage(), 'error');
+  }
 }
