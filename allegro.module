@@ -4,6 +4,14 @@
 * A description of what your module does.
 */
 
+use Drupal\allegro\Util\AllegroAPI;
+
+/**
+ * @param bool $login
+ * @param bool $reset
+ * @return AllegroAPI|bool
+ * @throws \SoapFault
+ */
 function allegro_client($login = TRUE, $reset = FALSE) {
   if (!$reset) {
     $allegro = &drupal_static(__FUNCTION__);

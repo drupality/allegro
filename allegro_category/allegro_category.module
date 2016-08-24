@@ -24,8 +24,57 @@ function allegro_category_help($route_name, RouteMatchInterface $route_match) {
 }
 
 function allegro_category_download($offset  = 0, $package = 5000) {
-    $db = \Drupal::database();
-    $db->startTransaction();
+  $db = \Drupal::database();
+  $db->startTransaction();
+
+  $allegro = allegro_client();
+  $response =  $allegro->getCatsDataLimit($offset, $package);
+  $vocab_name = 'allegro_categories';
+
+  foreach($response->catsList->item as $category) {
+      $term = \Drupal\taxonomy\Entity\Term::create([
+          'vid' => $vocab_name,
+          'name' => $category->catName,
+          'weight' => $category->catPosition,
+      ]);
 
 
+
+      if ($category->catParent) {
+          $term->parent->target_id = allegro_get_category_term_id_by_remote_id($category->catParent);
+      }
+
+      $term->set('field_allegro_category_id', $category->catId);
+      $term->set('field_allegro_category_parent', $category->catParent);
+      $term->set('field_allegro_category_position', $category->catPosition);
+      $term->set('field_allegro_country_code', $category->countryCode);
+      $term->set('field_allegro_is_prd_catalogue', $category->catIsProductCatalogueEnabled);
+
+      $term->save();
+
+  }
+
+}
+
+/**
+ * @param $remote_id category ID from Allegro
+ * @return int term ID or 0 if none found
+ */
+function allegro_get_category_term_id_by_remote_id($remote_id) {
+  $query = \Drupal::entityQuery('taxonomy_term');
+  $result = $query->condition('vid', 'allegro_categories')
+        ->condition('field_allegro_category_id', $remote_id)
+        ->execute();
+
+  if ($result) {
+    return reset($result);
+  }
+
+  return 0;
+}
+
+function allegro_category_remote_data_count() {
+    $allegro = allegro_client();
+    $response = $allegro->getCatsDataCount();
+    return $response->catsCount;
 }
